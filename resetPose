@@ -1,0 +1,14 @@
+import pymel.core as pm
+
+ctrls = pm.ls(sl=True)
+
+for ctrl in ctrls:
+    attrs = pm.listAttr(ctrl , u=True , k=True)
+    
+    for attr in attrs:
+        try:
+            defValue = pm.attributeQuery(attr , n=ctrl , ld=True)[-1]
+            pm.setAttr(ctrl+'.'+attr , defValue)
+        except:
+            print (ctrl + ' ' + attr + 'has not reseted')
+            pass
