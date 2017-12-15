@@ -1,0 +1,38 @@
+###SCALE CONTROLS FUNCTION
+import pymel.core as pm
+
+
+###############SCALING CONTROLLERS
+def scaleCtrls (self) :
+    myScale = pm.floatSliderGrp(scaleSlider , q=True , v=True)
+    myScale = myScale / 1
+    
+    crvTrans = pm.selected()
+    
+    for crvTran in crvTrans:
+        mySel = pm.select(crvTran+'.cv[*:*]')
+        pm.xform(mySel , s=(myScale,myScale,myScale) , dph=1 , r=True )
+    
+    pm.select( cl=True )
+    pm.select( crvTrans )
+    
+###AVOIDING WINDOW DUPLICATES
+if pm.window( 'scaleControllers' , ex=True ):
+    pm.deleteUI ('scaleControllers' , window=True)
+
+###DEFINING WINDOW SETTINGS
+pm.window( 'scaleControllers' , t='SCALE CONTROLLERS' , mnb=0 , mxb=0 , s=0 , w=200 , h=50 )
+
+###WINDOW CONTENT
+pm.columnLayout ( adj=False)
+pm.text("SELECT ALL THE CONTROLLERS YOU WANT TO SCALE" , al='center' , w=400 , h=20)
+pm.separator(h=10)
+scaleSlider = pm.floatSliderGrp(l='Scale' , field=True , w=400 , h=50 , min=.1 , max=5 , v=1 , s=.1)
+
+pm.button( label="Scale them" , h=50 , w=400 , command=scaleCtrls)
+
+###SHOW WINDOW
+pm.showWindow('scaleControllers')
+
+
+pm.listRelatives(pm.ls(sl=True))
